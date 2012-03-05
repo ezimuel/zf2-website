@@ -1,0 +1,27 @@
+This is the github repository of the Zend Framework web site
+http://framework.zend.com.
+
+The source code of the web site is not complete. We removed some parts like the
+manuals but almost all the web site is here. For instance the ZF2 module is fully
+included (http://framework.zend.com/zf2).
+
+This web site uses the libraries ZF 1.11 and ZF 2.0.0beta3.
+
+To run this web site on your local machine you have to configure the following
+files:
+
+- /document_root/index.php (add your ZF 1.11 path, on line 11)
+
+- /app/etc/config.ini (be sure that the cache.baseDir folder is writable from
+  the web server)
+
+- /app/jobs/agilezen.php (configure only if you want to update the kanban data)
+   - add your ZF 2.0.0beta3 path, on line 19
+   - add the API key of AgileZen, on line 30;
+
+- /app/jobs/invite_agile.php (configure only if you want to activate the invitation
+  of AgileZen in the kanban system)
+   - add your ZF 2.0.0beta3 path, on line 19;
+   - add the API key of AgileZen, on line 31;
+   - add the path to the log file, on line 60.
+

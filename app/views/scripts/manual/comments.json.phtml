@@ -1,0 +1,7 @@
+<?php
+$this->layout()->disableLayout();
+$content = $this->render('manual/_comments.phtml');
+echo $this->json(array(
+    'success' => $this->success,
+    'content' => preg_replace('/^\s+/', '', $content),
+));

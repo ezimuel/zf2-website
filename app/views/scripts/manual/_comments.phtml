@@ -1,0 +1,68 @@
+<?php
+
+if (!$this->comments) {
+    return;
+}
+
+$userIsAdministrator = (isset($this->user) && $this->user->isAdministrator());
+
+?>
+
+<?php if ($userIsAdministrator): ?>
+    <script>
+        function commentChangeStatus(commentId, commentStatus) {
+            dojo.xhrGet({
+                url:"/manual/administer-comment/change-status?context=json&commentId=" + commentId + "&commentStatus=" + commentStatus,
+                handleAs:"json",
+                load: function(data){
+                    x = dojo.byId('comment-status-'+data['commentId']);
+                    x.innerHTML = data['commentStatus'];
+                }
+            });
+        }
+
+
+    </script>
+<?php endif; ?>
+
+<div class="comments">
+    <h3>Comments</h3>
+    <?php
+    $bbcode = Zend_Markup::factory('Bbcode');
+
+
+    foreach ($this->comments as $comment):
+        if ($comment['status'] != 'VISIBLE' && !$userIsAdministrator) continue;
+
+    ?>
+
+    <div class="comment">
+        <div class="metadata">
+            Posted by: <?php echo $this->escape($comment['commenter_name']) ?>
+            on: <?php echo $comment['created_on'] ?>
+            <a href="#comment-<?php echo $comment['id']?>" name="comment-<?php echo $comment['id'] ?>">⁋</a>
+        </div>
+        <div class="body"><?php echo $bbcode->render($comment['body']) ?></div>
+        <?php if ($userIsAdministrator): ?>
+        <div class="admin">
+            <?php
+                $adminUrl = '/manual/administer-comment/change-status';
+            ?>
+            <span class="status" style="font-size: .8em">
+                Posted In: <?php echo $comment['section_name'] ?><br />
+                Current status: <span id="comment-status-<?php echo $comment['id'] ?>"><?php echo $comment['status']?></span> |
+                Change to:
+                    <?php foreach (ManualCommentModel::getStatusTypes() as $statusType): ?>
+                        [<a href="#foo" onclick="commentChangeStatus(<?php echo $comment['id'] ?>, '<?php echo $statusType ?>'); return false;">
+                            <?php echo $statusType ?>
+                        </a>]
+                    <?php endforeach; ?>
+            </span>
+        </div>
+        <?php endif; ?>
+    </div>
+
+    <?php endforeach; ?>
+</div>
+
+

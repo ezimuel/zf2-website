@@ -1,0 +1,7 @@
+<?php
+$this->layout()->disableLayout();
+$content = $this->commentForm->render($this);
+echo $this->json(array(
+    'success' => $this->success,
+    'content' => preg_replace('/^\s+/', '', $content),
+));

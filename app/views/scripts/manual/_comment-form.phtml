@@ -1,0 +1,30 @@
+<?php if ($this->mVersion == $this->current): ?>
+    <div class="comment-form">
+        <h4>
+            <span class="expand">+</span>
+            Add A Comment
+        </h4>
+
+        <p style="text-align: center;">
+            Please do not report issues via comments; use the <a href="/issues">ZF Issue Tracker</a>.
+        </p>
+
+        <p style="text-align: center;">
+        <?php if ($this->commentForm->getElement('name') !== null): ?>
+            <small>If you have a JIRA/Crowd account, we suggest you <a href="/auth/">login</a> first before commenting.</small>
+        <?php elseif (isset($this->user)): ?>
+            Your comments will be posted as <b><?php echo $this->user->name ?></b>
+        <?php endif; ?>
+        </p>
+        <?php echo $this->commentForm ?>
+        
+    </div>
+
+    <?php
+    $this->dojo()->addStylesheetModule('zf.themes.dojodemo')
+                 ->addOnLoad('function(){
+    dojo.query(".comment-form form").onsubmit(zf.commentHandler);
+}');
+    ?>
+<?php endif ?>
+

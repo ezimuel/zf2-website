@@ -1,0 +1,29 @@
+<?php
+
+if ($this->comments instanceof Zend_Paginator) {
+    /* @var $comments Zend_Paginator */
+    $comments = $this->comments;
+    $comments->setItemCountPerPage(25);
+
+}
+
+?>
+
+Filter: <?php echo $this->filter ?><br />
+Switch To Filter:
+<a href="/manual/administer-comment/list/all/1">All</a> |
+<a href="/manual/administer-comment/list/visible/1">Visible</a> |
+<a href="/manual/administer-comment/list/hidden/1">Hidden</a> |
+<a href="/manual/administer-comment/list/delete/1">Delete</a>
+<br />
+Comment Count: <?php echo $comments->getTotalItemCount(); ?><br />
+<? if ($this->filter == 'delete'): ?>
+    <a href="/manual/administer-comment/purge-deleted" onclick="return confirm('Are you sure you want to purge <?php echo $comments->getTotalItemCount() ?> deleted comments?')">Purge</a> deleted comments.
+<? endif ?>
+<br />
+<br />
+<?php
+echo $this->paginationControl($comments, 'Sliding', 'comment-list-controls');
+echo $this->render('manual/_comments.phtml');
+echo $this->paginationControl($comments, 'Sliding', 'comment-list-controls');
+?>
